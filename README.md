@@ -1,7 +1,7 @@
 # 实验室安全准入自动化工具集 (UESTC Lab Safety Toolkit)
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Stars](https://img.shields.io/github/stars/jasonmumiao/UESTC-Lab-Safety-Toolkit?style=social)](https://github.com/jasonmumiao/UESTC-Lab-Safety-Toolkit/stargazers)
+[![Stars](https://img.shields.io/github/stars/YOUR_USERNAME/UESTC-Lab-Safety-Toolkit?style=social)](https://github.com/YOUR_USERNAME/UESTC-Lab-Safety-Toolkit/stargazers)
 
 一个面向**电子科技大学（UESTC）实验室安全准入要求**的自动化工具集。本项目旨在帮助学生更高效地完成前置学习和在线考试，包含两大核心工具：
 
@@ -14,7 +14,7 @@
 
 ### Part 1: Python 刷时长脚本 (`study_time_script.py`)
 
-本脚本通过模拟浏览器行为，自动向服务器发送“在线学习”心跳请求，从而在后台为你累积学习时长，无需手动打开网页。
+本脚本通过模拟浏览器登录后的“心跳请求”来累积学习时长，从而在后台为你累积学习时长，无需手动打开网页。
 
 -   **高效稳定**: 每分钟发送一次心跳请求，确保时长稳定增长。
 -   **浏览器模拟**: 使用 `curl_cffi` 库模拟 Chrome 110 浏览器的底层指纹，有效绕过常见的脚本检测。
@@ -32,7 +32,9 @@
 
 两个工具的安装和使用方法不同，请根据需要分别配置。
 
-### 1. 配置 Python 刷时长脚本
+### 1. 配置 Python 刷时长脚本 (`study_time_script.py`)
+
+本脚本通过模拟浏览器登录后的“心跳请求”来累积学习时长。因此，每次运行前，都需要手动获取一次有效的身份凭证 (Cookie)。
 
 #### 步骤 1: 环境准备
 
@@ -42,28 +44,42 @@
     pip install curl_cffi
     ```
 
-#### 步骤 2: 获取 Cookie
+#### 步骤 2: 获取并配置 Cookie (关键步骤)
 
-这是最关键的一步！Cookie 是脚本的身份凭证，有效期较短，**每次运行前都需要获取最新的**。
+Cookie 是脚本模拟你身份的唯一凭证，具有时效性，**每次运行脚本前都必须获取最新的**。
 
-1.  登录 [电子科技大学 WebVPN](https://webvpn.uestc.edu.cn/)。
-2.  进入“实验室与设备处” -> “实验室安全考试系统” -> 点击**开始学习**，进入学习页面。
-3.  按下 `F12` 键打开浏览器开发者工具，切换到 **“网络 (Network)”** 选项卡。
-4.  在页面上等待约一分钟，开发者工具的列表中会出现一个名为 `exam_xuexi_online.php` 的请求。
-5.  点击该请求，在右侧窗口中找到 **“标头 (Headers)”** -> **“请求标头 (Request Headers)”**。
-6.  找到 `Cookie:` 字段，**复制其完整的、超长的值**。
-    > **注意**: 这个 Cookie 值非常长，请确保全部复制。
+1.  **登录网站**: 登录 [电子科技大学 WebVPN](https://webvpn.uestc.edu.cn/) 并进入**实验室安全在线学习**页面。
+
+2.  **打开开发者工具**: 在学习页面上，按 `F12` 键打开浏览器“开发者工具”，并切换到 **“网络 (Network)”** 选项卡。
+
+3.  **捕获心跳请求**: 保持页面打开状态，**等待大约一分钟**，让网站自动发送一次**心跳请求**。在网络请求列表中，你会看到一个名为 `exam_xuexi_online.php` 的请求出现。
+
+4.  **定位 Cookie**: 点击这个 `exam_xuexi_online.php` 请求，在右侧弹出的窗口中，依次找到 **标头 (Headers)** > **请求标头 (Request Headers)** > `Cookie`。
+
+    > **提示**: `Cookie` 字段的值是一段非常非常长的字符串，这正是我们需要的。
+
+5.  **复制 Cookie 值**: 右键点击 `Cookie` 字段的**完整值**，选择“复制值”(Copy value)。
+
+6.  **粘贴到脚本**: 打开 `study_time_script.py` 文件，将刚刚复制的**一整行 Cookie 字符串**粘贴到 `cookie_string = '***********'` 的引号内，替换掉原来的星号。
+
+    ```python
+    # 修改前:
+    cookie_string = '***********'
+
+    # 修改后 (示例):
+    cookie_string = 'remember_webvpn_user=a-long-string; other_cookie=another-long-string; ...'
+    ```
 
 #### 步骤 3: 运行脚本
 
-1.  将复制的 Cookie 字符串粘贴到 `study_time_script.py` 文件中的 `cookie_string = '***********'` 处，替换掉星号。
-2.  在终端中运行脚本：
+1.  保存修改后的 `study_time_script.py` 文件。
+2.  在终端中进入该文件所在的目录，运行脚本：
     ```bash
     python study_time_script.py
     ```
-3.  脚本会开始每分钟发送一次心跳。你可以将这个终端窗口最小化，让它在后台运行。
+3.  脚本会开始每分钟发送一次心跳。你可以将这个终端窗口最小化，让它在后台运行，直到你累积够所需的时长。如果看到 “Cookie 可能已失效” 的提示，请重复**步骤2**更换新的 Cookie。
 
-### 2. 配置油猴考试助手脚本
+### 2. 配置油猴考试助手脚本 (`exam_helper.user.js`)
 
 #### 步骤 1: 安装脚本管理器
 
