@@ -1,7 +1,7 @@
 # 实验室安全考试助手 (UESTC Lab Safety Test Helper)
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Stars](https://img.shields.io/github/stars/YOUR_USERNAME/UESTC-Lab-Safety-Test-Helper?style=social)](https://github.com/YOUR_USERNAME/UESTC-Lab-Safety-Test-Helper/stargazers)
+[![Stars](https://img.shields.io/github/stars/YOUR_USERNAME/UESTC-Lab-Safety-Test-Helper?style=social)](https://github.com/jasonmumiao/UESTC-Lab-Safety-Test-Helper/stargazers)
 
 一个用于**电子科技大学（UESTC）实验室安全准入考试**的油猴（Tampermonkey）脚本。它旨在帮助学生更高效地完成考试和维护题库，主要功能包括自动答题和智能提取新题/错题。
 
