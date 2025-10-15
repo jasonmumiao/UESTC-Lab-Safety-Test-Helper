@@ -1,7 +1,7 @@
 # 实验室安全准入自动化工具集 (UESTC Lab Safety Toolkit)
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Stars](https://img.shields.io/github/stars/YOUR_USERNAME/UESTC-Lab-Safety-Toolkit?style=social)](https://github.com/YOUR_USERNAME/UESTC-Lab-Safety-Toolkit/stargazers)
+[![Stars](https://img.shields.io/github/stars/jasonmumiao/UESTC-Lab-Safety-Toolkit?style=social)](https://github.com/jasonmumiao/UESTC-Lab-Safety-Toolkit/stargazers)
 
 一个面向**电子科技大学（UESTC）实验室安全准入要求**的自动化工具集。本项目旨在帮助学生更高效地完成前置学习和在线考试，包含两大核心工具：
 
